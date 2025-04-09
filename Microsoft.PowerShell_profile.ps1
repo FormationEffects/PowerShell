@@ -1,18 +1,25 @@
-# Imports
-Import-Module -Name Terminal-Icons
-Import-Module -Name PSReadLine
+# PowerShell Profile v1.0.1
+# Author: Jaron Wilding
 
-$CurrentDirectory = Split-Path -Parent $Profile
-$AliasesPath = Join-Path $CurrentDirectory "aliases.ps1"
-$ThemePath = Join-Path $CurrentDirectory "themes.ps1"
+# === Profile Setup ===
+$ProfileRoot = Split-Path -Parent $Profile
 
-# Settings
-$env:VIRTUAL_ENV_DISABLE_PROMPT = 1
-Set-PSReadLineOption -PredictionSource History
-Set-PSReadLineOption -PredictionViewStyle InlineView
-Set-PSReadLineOption -EditMode Windows
+# === Core Setup ===
+. "$ProfileRoot\core\modules.ps1" -ErrorAction Stop
+. "$ProfileRoot\core\core.ps1" -ErrorAction Stop
 
-# Dot source
-. $AliasesPath
-. $ThemePath
+# === Config Blocks ===
+$ConfigFiles = @(
+    "$ProfileRoot\config\themes.ps1",
+    "$ProfileRoot\config\funcs.pwsh.ps1",
+    "$ProfileRoot\config\funcs.python.ps1"
+)
+
+foreach ($ConfigFile in $ConfigFiles) {
+    if (Test-Path $ConfigFile) {
+        . $ConfigFile -ErrorAction Stop
+    } else {
+        Write-Error "Config file not found: $ConfigFile"
+    }
+}
 
