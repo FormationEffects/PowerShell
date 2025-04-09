@@ -8,8 +8,22 @@ enum Theme {
 }
 
 # === Config ===
-$Global:CurrentTheme = [Theme]::OhMyPosh
+$defaultTheme = [Theme]::OhMyPosh
+$Global:CurrentTheme = $defaultTheme
 $ThemeDirectory = Join-Path (Split-Path -Parent $Profile) "themes"
+
+if ($env:TerminalTheme) {
+    try {
+        $parsedTheme = [Theme]::Parse([Theme], $env:TerminalTheme, $true)
+        $Global:CurrentTheme = $parsedTheme
+        Write-Debug "Parsed theme from environment variable: $parsedTheme"
+    } catch {
+        Write-Debug "Failed to parse theme from environment variable. Defaulting to OhMyPosh."
+    }
+} else {
+    Write-Debug "No theme specified in environment variable. Defaulting to OhMyPosh."
+}
+
 
 switch ($Global:CurrentTheme) {
     # The enums need to be surrounded by parentheses to be evaluated correctly.
