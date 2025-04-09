@@ -9,7 +9,7 @@ $VENV_DIR_NAME = ".venv"
 function Get-Venv() {
     <# 
     .SYNOPSIS
-        Activates the virtual environment.
+        Activates / Deactivates the virtual environment.
 
     .DESCRIPTION
         This function activates the virtual environment if it exists. If the virtual environment is already active, it deactivates it.
@@ -60,7 +60,7 @@ function New-Venv() {
         deactivate
     }
     if (Test-Path $VENV_DIR_NAME) {
-        Write-Warning "Virtual environment already exists. Use -r to refresh it."
+        Write-Warning "Virtual environment already exists. Use -r to reset it."
         return
     }
     if (-not (Get-Command python -ErrorAction SilentlyContinue)) {
@@ -150,7 +150,7 @@ function Invoke-Venv() {
         Manages the virtual environment.
 
     .DESCRIPTION
-        This function provides a simple interface to create, activate, remove, or refresh the virtual environment.
+        This function provides a simple interface to create, activate, remove, or reset the virtual environment.
         It is useful for managing Python virtual environments in PowerShell.
 
     .PARAMETER Create (alias -c)
@@ -162,8 +162,8 @@ function Invoke-Venv() {
     .PARAMETER Delete (alias -d)
         Removes the virtual environment (alias for -r).
 
-    .PARAMETER Refresh (alias -r)
-        Refreshes the virtual environment by removing and recreating it.
+    .PARAMETER Reset (alias -r)
+        Resets the virtual environment by removing and recreating it.
 
     .PARAMETER Help (alias -h)
         Displays help information.
@@ -178,7 +178,7 @@ function Invoke-Venv() {
         venv -c -Verbose // Creates a new virtual environment with verbose output
         venv -a -Debug // Activates the virtual environment (default action) with debug output
         venv -d -Verbose // Deletes the virtual environment with verbose output
-        venv -r // Refreshes the virtual environment
+        venv -r // Resets the virtual environment
         venv -h // Displays help information
     #>
     [CmdLetBinding()]
@@ -186,7 +186,7 @@ function Invoke-Venv() {
         [Alias('c')][switch]$Create,
         [Alias('a')][switch]$Activate,
         [Alias('d')][switch]$Delete,
-        [Alias('r')][switch]$Refresh,
+        [Alias('r')][switch]$Reset,
         [Alias('h')][switch]$Help
     )
 
@@ -194,7 +194,7 @@ function Invoke-Venv() {
     if ($Create) { $actions += "create" }
     if ($Activate) { $actions += "activate" }
     if ($Delete) { $actions += "delete" }
-    if ($Refresh) { $actions += "refresh" }
+    if ($Reset) { $actions += "reset" }
     if ($Help) { $actions += "help" }
 
     if ($actions.Count -gt 1) {
@@ -208,19 +208,19 @@ function Invoke-Venv() {
         "create" { New-Venv -Verbose:$VerbosePreference }
         "activate" { Get-Venv -Verbose:$VerbosePreference }
         "delete" { Remove-Venv -Verbose:$VerbosePreference }
-        "refresh" { Reset-Venv -Verbose:$VerbosePreference }
+        "reset" { Reset-Venv -Verbose:$VerbosePreference }
         "help" {
             Write-Host "Usage: venv [-c] [-a] [-r] [-d] [-rr] [-h]" -ForegroundColor Cyan
             Write-Host "-c, --create   Create a new virtual environment."
             Write-Host "-a, --activate Activate the virtual environment."
             Write-Host "-d, --delete   Remove the virtual environment."
-            Write-Host "-r, --refresh  Refresh the virtual environment."
+            Write-Host "-r, --reset    Reset (Delete and recreate) the virtual environment."
             Write-Host "-h, --help     Show this help message."
             Write-Host "-Verbose       Show detailed output."
         }
         default {
             Write-Host "Invalid action: $action" -ForegroundColor Red
-            Write-Host "Available actions: create (-c), activate (-a), delete (-d), refresh (-r), help (-h)." -ForegroundColor Yellow
+            Write-Host "Available actions: create (-c), activate (-a), delete (-d), reset (-r), help (-h)." -ForegroundColor Yellow
         }
     }
 }
@@ -318,6 +318,6 @@ function Reset-Requirements() {
 
 # == Aliases for convenience
 Set-Alias -Name venv -Value Invoke-Venv
-Set-Alias -Name pyupdate -Value Get-Requirements
 Set-Alias -Name pyinstall -Value Initialize-Requirements
+Set-Alias -Name pyupdate -Value Get-Requirements
 Set-Alias -Name pyreset -Value Reset-Requirements
