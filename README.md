@@ -2,6 +2,7 @@
 
 This repository contains my personal PowerShell profile, which includes added functionality for the specific programs I code in.
 
+
 ## Table of Contents
 
 [**Installation**](#installation)
@@ -152,7 +153,7 @@ TerminalTheme=Starship
 
 ## Functions
 
-### PowerShell
+### PowerShell <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/powershell/powershell-original.svg" height="20"/>
 
 | Command | Alias | Description |
 |----------|-------|-------------|
@@ -221,7 +222,7 @@ TerminalTheme=Starship
     [TODO] NOT WORKING ON REMOTE MACHINE.
 
 
-### Python
+### Python <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" height="20"/>
 
 | Function | Alias | Description |
 |----------|-------|-------------|
