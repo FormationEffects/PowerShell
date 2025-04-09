@@ -1,0 +1,100 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "palette": {
+    "black": "#21222C",
+    "blue": "#BD93F9",
+    "cyan": "#8BE9FD",
+    "darkGray": "#6272A4",
+    "default": "#F8F8F2",
+    "green": "#50FA7B",
+    "lightBlue": "#D6ACFF",
+    "lightCyan": "#A4FFFF",
+    "lightGreen": "#69FF94",
+    "lightMagenta": "#FF92DF",
+    "lightRed": "#FF6E6E",
+    "lightWhite": "#FFFFFF",
+    "lightYellow": "#F1FA8C",
+    "magenta": "#FF79C6",
+    "red": "#FF5555",
+    "white": "#F8F8F2",
+    "yellow": "#F1FA8C"
+  },
+  "upgrade": {
+    "source": "cdn",
+    "interval": "168h",
+    "auto": false,
+    "notice": false
+  },
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "properties": {
+            "cache_duration": "none",
+            "style": "folder"
+          },
+          "template": "{{ .Location }}",
+          "foreground": "p:white",
+          "powerline_symbol": "\ue0b0",
+          "background": "transparent",
+          "type": "path",
+          "style": "plain"
+        },
+        {
+          "properties": {
+            "branch_icon": "\ue0a0 ",
+            "cache_duration": "none",
+            "fetch_status": true,
+            "fetch_upstream_icon": true
+          },
+          "foreground": "p:green",
+          "background": "transparent",
+          "type": "git",
+          "style": "plain",
+          "foreground_templates": [
+            "{{ if or (.Working.Changed) (.Staging.Changed) }}p:yellow{{ end }}",
+            "{{ if and (gt .Ahead 0) (gt .Behind 0) }}p:red{{ end }}",
+            "{{ if gt .Ahead 0 }}p:magenta{{ end }}",
+            "{{ if gt .Behind 0 }}p:magenta{{ end }}"
+          ],
+          "templates": [
+            " \uef4d {{ .UpstreamIcon }} {{ .HEAD }}",
+            "{{if .BranchStatus }} {{ .BranchStatus }} {{ end }}",
+            "{{ if .Working.Changed }}\uf044  {{ .Working.String }}{{ end }}"
+          ]
+        },
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": " \uef4d \ue73c {{ .Full }}",
+          "foreground": "p:magenta",
+          "background": "transparent",
+          "type": "python",
+          "style": "plain"
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "properties": {
+            "always_enabled": true,
+            "cache_duration": "none"
+          },
+          "template": "\ue285",
+          "foreground": "p:green",
+          "type": "status",
+          "style": "plain"
+        }
+      ],
+      "newline": true
+    }
+  ],
+  "version": 3,
+  "final_space": true
+}
