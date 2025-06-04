@@ -21,7 +21,7 @@ function Use-Module	{
 
     # If module is not installed, install it to the user profile path.
     try {
-        Write-Debug "Module '$ModuleName' not found. Installing to user directory..." ForegroundColor Yellow
+        Write-Debug "Module '$ModuleName' not found. Installing to user directory..."
         Install-Module -Name $ModuleName -Scope CurrentUser -Force:$ForceInstall -ErrorAction Stop
         Import-Module -Name $ModuleName -ErrorAction Stop
     } catch {
