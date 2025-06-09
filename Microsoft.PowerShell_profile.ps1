@@ -23,3 +23,15 @@ foreach ($ConfigFile in $ConfigFiles) {
     }
 }
 
+# === Install \ Setup Blocks ===
+$InstallFiles = @(
+    "$ProfileRoot\install\install.uv.ps1"
+)
+
+foreach ($InstallFile in $InstallFiles) {
+    if (Test-Path $InstallFile) {
+        . $InstallFile -ErrorAction Stop
+    } else {
+        Write-Warning "Install file not found: $InstallFile"
+    }
+}
