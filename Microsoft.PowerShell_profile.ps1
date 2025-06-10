@@ -12,7 +12,8 @@ $ProfileRoot = Split-Path -Parent $Profile
 $ConfigFiles = @(
     "$ProfileRoot\config\themes.ps1",
     "$ProfileRoot\config\funcs.pwsh.ps1",
-    "$ProfileRoot\config\funcs.python.ps1"
+    "$ProfileRoot\config\funcs.python.ps1",
+    "$ProfileRoot\config\funcs.git.ps1"
 )
 
 foreach ($ConfigFile in $ConfigFiles) {

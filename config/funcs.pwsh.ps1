@@ -14,9 +14,17 @@ function Enter-Source {
         Enter-Source
         src (alias for Enter-Source)
     #>
+    $source_dir = "C:\Users\jwilding\source\repos\"
 
-    Set-Location "C:\Users\Jaron\source\repos\"
+    if ($env:SOURCE_DIR) {
+        if (Test-Path $env:SOURCE_DIR) {
+            $source_dir = $env:SOURCE_DIR
+        }
+    }
+
+    Set-Location $source_dir
 }
+
 
 function Update-Profile {
     <#
