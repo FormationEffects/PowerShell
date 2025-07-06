@@ -26,7 +26,7 @@ foreach ($ConfigFile in $ConfigFiles) {
 
 # === Install \ Setup Blocks ===
 $InstallFiles = @(
-    "$ProfileRoot\install\install.uv.ps1"
+    # "$ProfileRoot\install\install.uv.ps1"
 )
 
 foreach ($InstallFile in $InstallFiles) {

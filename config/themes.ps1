@@ -38,7 +38,6 @@ switch ($Global:CurrentTheme) {
 
     ([Theme]::OhMyPosh) {
         $ThemePath = Join-Path $ThemeDirectory "panda.omp.json"
-        $env:POSH_GIT_ENABLED = $true
         try {
             oh-my-posh --init --shell pwsh --config $ThemePath | Invoke-Expression
         } catch {

@@ -3,6 +3,7 @@
 
 # === Set Environment Variables ===
 $env:VIRTUAL_ENV_DISABLE_PROMPT = 1
+$env:POSH_GIT_ENABLED = $true # Posh-git integration: https://github.com/dahlbyk/posh-git
 Set-PSReadLineOption -PredictionSource History
 Set-PSReadLineOption -PredictionViewStyle InlineView
 Set-PSReadLineOption -EditMode Windows
