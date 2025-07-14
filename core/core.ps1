@@ -11,3 +11,7 @@ Set-PSReadLineOption -EditMode Windows
 if (Get-Command "uv" -ErrorAction SilentlyContinue) {
     (& uv generate-shell-completion powershell) | Out-String | Invoke-Expression
 }
+
+if (Get-Command "delta" -ErrorAction SilentlyContinue) {
+    (& delta --generate-completion powershell) | Out-String | Invoke-Expression
+}
