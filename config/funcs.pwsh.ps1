@@ -1,28 +1,38 @@
 # config/funcs.pwsh.ps1
 # Specifically for PowerShell related functions and aliases.
 
-function Enter-Source {
+function Enter-Location {
     <#
     .SYNOPSIS
-        Naviagates to the source directory.
+        Navigates to a specific directory. If none found, will default to a preset one.
 
     .DESCRIPTION
-        This function changes the current directory to the source directory where the project files are located.
-        It is useful for quickly accessing the source code directory.
+        This function is typically designed to enter the source/repos folder, but I've updated it to have
+        env variables and input locations.
+
+    .PARAMETER Path (alias -p)
+        Backup path to navigate to if Environment variable is not setup.
+
+    .PARAMETER EnvVariable (alias -e)
+        Environment variable that holds a path to enter. If the environment variable is empty, default to Path.
 
     .EXAMPLE
-        Enter-Source
-        src (alias for Enter-Source)
+        Enter-Location
+        src (alias for Enter-Location at "C:\Users\jwilding\source\repos\")
+        dev (alias for Enter-Location at "C:\Users\jwilding\source\repos\FEPipeline-dev")
+        pub (alias for Enter-Location at "C:\Users\jwilding\source\repos\FEPipeline-public")
     #>
-    $source_dir = "C:\Users\jwilding\source\repos\"
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory=$true)]
+        [Alias('p')][string]$Path,
 
-    if ($env:SOURCE_DIR) {
-        if (Test-Path $env:SOURCE_DIR) {
-            $source_dir = $env:SOURCE_DIR
-        }
-    }
+        [Parameter(Mandatory=$true)]
+        [Alias('e')][string]$EnvVariable
+    )
 
-    Set-Location $source_dir
+    $Path = ($env_value =  [Environment]::GetEnvironmentVariable($EnvVariable)) -and (Test-Path $env_value) ? $env_value : $Path
+    Set-Location $Path
 }
 
 
@@ -130,7 +140,11 @@ function Get-SystemReport {
 }
 
 # === Aliases ===
-Set-Alias -Name src -Value Enter-Source
 Set-Alias -Name sysinfo -Value Get-SystemReport
 Set-Alias -Name profileinfo -Value Show-ProfileInfo
 Set-Alias -Name profileupdate -Value Update-Profile
+
+# === Alias Functions ===
+Set-Item -Path function:src -Value { Enter-Location -Path "C:\Users\jwilding\source\repos\"                     -EnvVariable "SOURCE_DIR" }
+Set-Item -Path function:dev -Value { Enter-Location -Path "C:\Users\jwilding\source\repos\FEPipeline-dev"       -EnvVariable "FE_PIPELINE_DEV" }
+Set-Item -Path function:pub -Value { Enter-Location -Path "C:\Users\jwilding\source\repos\FEPipeline-public"    -EnvVariable "FE_PIPELINE_PUB" }

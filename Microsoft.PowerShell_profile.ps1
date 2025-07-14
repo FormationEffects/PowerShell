@@ -11,6 +11,7 @@ $ProfileRoot = Split-Path -Parent $Profile
 # === Config Blocks ===
 $ConfigFiles = @(
     "$ProfileRoot\config\themes.ps1",
+    "$ProfileRoot\config\funcs.form.ps1",
     "$ProfileRoot\config\funcs.pwsh.ps1",
     "$ProfileRoot\config\funcs.python.ps1",
     "$ProfileRoot\config\funcs.git.ps1"
@@ -34,5 +35,17 @@ foreach ($InstallFile in $InstallFiles) {
         . $InstallFile -ErrorAction Stop
     } else {
         Write-Warning "Install file not found: $InstallFile"
+    }
+}
+
+# === Completion Setup ===
+$CompletionFiles = @(
+    "$ProfileRoot\completion\rez.ps1"
+)
+foreach ($CompletionFile in $CompletionFiles) {
+    if (Test-Path $CompletionFile) {
+        . $CompletionFile -ErrorAction Stop
+    } else {
+        Write-Warning "Completion file not found: $CompletionFile"
     }
 }
