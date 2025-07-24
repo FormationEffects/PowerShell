@@ -13,22 +13,11 @@ function Install-UV {
     #>
     [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact="High")]
     param()
-
-    # ====== Stage 1: Determine the scope we are running in.
-    # Determine scope: Machine if admin, else User
-    $principal =  New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-    $scope = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-
-    if ($scope) {
-        Write-Verbose "Running as Administrator; setting environment variables at Machine scope."
-        $env_scope = [EnvironmentVariableTarget]::Machine
-    } else {
-        Write-Verbose "Running as User; setting environment variables at User scope. Recommended to run as Administrator for full functionality."
-        $env_scope = [EnvironmentVariableTarget]::User
-    }
+    Write-Verbose "Running as Administrator; setting environment variables at Machine scope."
+    $env_scope = [EnvironmentVariableTarget]::Machine
     
     # ====== Stage 2: Make a backup of the environment variables, since we literally overwrite PATH
-    $script_dir = if ($PSSCriptRoot) { $PSScriptRoot } else { Split-Path -Path $MyInvocation.MyCommand.Definition -Parent }
+    $script_dir = if ($Profile) { $Profile } else { Split-Path -Path $MyInvocation.MyCommand.Definition -Parent }
 
     $time_stamp = Get-Date -Format "yyyMMdd_HHmmss"
     $backup_dir = Join-Path $script_dir "backups"
@@ -40,20 +29,17 @@ function Install-UV {
     reg export "HKCU\Environment" $user_reg /y | Out-Null
     Write-Verbose "Created backup of user environment variables."
 
-    if ($scope) {
         # Create the machine environment backup
-        reg export "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" $mach_reg /y | Out-Null
-        Write-Verbose "Created backup of machine environment variables."
-    }
-
+    reg export "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" $mach_reg /y | Out-Null
+    Write-Verbose "Created backup of machine environment variables."
     # ====== Stage 3: Setup the Environment variables as specific variables, and add them to the path.
     $env_vars = @{
-        "UV_INSTALL_DIR"        = "C:\Custom\Managers\uv"
-        "UV_TOOL_DIR"           = "C:\Custom\Managers\uv\tools"
-        "UV_PYTHON_INSTALL_DIR" = "C:\Custom\Managers\uv\pythons"
-        "UV_PYTHON_BIN_DIR"     = "C:\Custom\Managers\python\bin"
-        "UV_CACHE_DIR"          = "C:\Custom\Managers\python\.cache"
-        "UV_TOOL_BIN_DIR"       = "C:\Custom\Managers\python\.local\bin"
+        "UV_INSTALL_DIR"        = "C:\Formation\Managers\uv"
+        "UV_TOOL_DIR"           = "C:\Formation\Managers\uv\tools"
+        "UV_PYTHON_INSTALL_DIR" = "C:\Formation\Managers\uv\pythons"
+        "UV_PYTHON_BIN_DIR"     = "C:\Formation\Managers\python\bin"
+        "UV_CACHE_DIR"          = "C:\Formation\Managers\python\.cache"
+        "UV_TOOL_BIN_DIR"       = "C:\Formation\Managers\python\.local\bin"
     }
     # Ensure Environment Variables are set
     foreach ($name in $env_vars.Keys) {
@@ -91,11 +77,9 @@ function Install-UV {
         Write-Verbose "UV command already exists; skipping installation."
     }
     # Install the Python versions
-    if($PSCmdlet.ShouldProcess("Install Python", "Install Python 3.11, 3.12, and 3.13-preview")) {
-        Write-Verbose "Installing Python versions 3.11, 3.12, and 3.13 and pinning to default."
-        uv python install 3.11
-        uv python install 3.12
-        uv python install 3.13 --preview --default
+    if($PSCmdlet.ShouldProcess("Install Python", "Install Python 3.11")) {
+        Write-Verbose "Installing Python version 3.11 pinning to default."
+        uv python install 3.11 --preview --default
     }
 
     # Install ruff as well
