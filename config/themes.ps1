@@ -38,10 +38,14 @@ switch ($Global:CurrentTheme) {
 
     ([Theme]::OhMyPosh) {
         $ThemePath = Join-Path $ThemeDirectory "panda.omp.json"
-        try {
-            oh-my-posh --init --shell pwsh --config $ThemePath | Invoke-Expression
-        } catch {
-            Write-Error "Failed to initalize Oh My Posh theme: $_"
+        if (Get-Command "oh-my-posh" -ErrorAction SilentlyContinue) {
+            try {
+                oh-my-posh --init --shell pwsh --config $ThemePath | Invoke-Expression
+            } catch {
+                Write-Error "Failed to initalize Oh My Posh theme: $_"
+            }
+        } else {
+            Write-Error "Oh My Posh command not found. Please install Oh My Posh to use this theme."
         }
     }
 
