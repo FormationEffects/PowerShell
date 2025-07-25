@@ -39,7 +39,9 @@ foreach ($ConfigFile in $ConfigFiles) {
 
 # === Install \ Setup Blocks ===
 $InstallFiles = @(
-    # "$ModulePath\install\install.uv.ps1"
+    # "$ModulePath\install\install.uv.ps1",
+    # "$ModulePath\install\install.ohmyposh.ps1",
+    # "$ModulePath\install\install.powershell.ps1",
 )
 
 foreach ($InstallFile in $InstallFiles) {
@@ -52,7 +54,8 @@ foreach ($InstallFile in $InstallFiles) {
 
 # === Completion Setup ===
 $CompletionFiles = @(
-    "$ModulePath\completion\rez.ps1"
+    "$ModulePath\completion\_rez.ps1",
+    "$ModulePath\completion\_eza.ps1"
 )
 foreach ($CompletionFile in $CompletionFiles) {
     if (Test-Path $CompletionFile) {
