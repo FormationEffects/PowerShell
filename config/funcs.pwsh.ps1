@@ -322,10 +322,6 @@ Set-Alias -Name comphash -Value Compare-Checksum
 Set-Alias -Name gethash -Value Get-Checksum
 
 # === Alias Functions ===
-Set-Item -Path function:src -Value { Enter-Location -Path "C:\Users\jwilding\source\repos\"                     -EnvVariable "SOURCE_DIR" }
-Set-Item -Path function:dev -Value { Enter-Location -Path "C:\Users\jwilding\source\repos\FEPipeline-dev"       -EnvVariable "FE_PIPELINE_DEV" }
-Set-Item -Path function:pub -Value { Enter-Location -Path "C:\Users\jwilding\source\repos\FEPipeline-public"    -EnvVariable "FE_PIPELINE_PUB" }
-
-
-# Set-Item -Path function:cmp-hash -Value { Compare-Checksum -PathA $args[0] -PathB $args[1] -Algorithm "SHA256" -Output:$true }
-# Set-Item -Path function:get-hash -Value { Get-Checksum -Path $args[0] -Algorithm "SHA256" -Recurse:$true -Output:$true }
+#Set-Item -Path function:src -Value { Enter-Location -Path "C:\Users\jwilding\source\repos\"                     -EnvVariable "SOURCE_DIR" }
+#Set-Item -Path function:dev -Value { Enter-Location -Path "C:\Users\jwilding\source\repos\FEPipeline-dev"       -EnvVariable "FE_PIPELINE_DEV" }
+#Set-Item -Path function:pub -Value { Enter-Location -Path "C:\Users\jwilding\source\repos\FEPipeline-public"    -EnvVariable "FE_PIPELINE_PUB" }
