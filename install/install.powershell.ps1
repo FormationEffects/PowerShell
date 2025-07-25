@@ -1,5 +1,5 @@
 
-Install-FormationProfile {
+function Install-FormationProfile {
     <#
     .SYNOPSIS
     Installs or updates Formation Effects PowerShell profile.

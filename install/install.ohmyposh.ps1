@@ -27,7 +27,7 @@ function Install-OhMyPosh {
     if (Get-Command "oh-my-posh" -ErrorAction SilentlyContinue) {
         Write-Output "Oh My Posh is already installed, upgrading..."
         try {
-            & $winget_path $winget_update_args
+            Start-Process -FilePath $winget_path -ArgumentList $winget_update_args -Wait -NoNewWindow
             Write-Output "Oh My Posh upgraded successfully."
         } catch {
             Write-Error "Failed to upgrade Oh My Posh: $_"
@@ -35,7 +35,7 @@ function Install-OhMyPosh {
     } else {
         Write-Output "Installing Oh My Posh..."
         try {
-            & $winget_path $winget_install_args
+            Start-Process -FilePath $winget_path -ArgumentList $winget_install_args -Wait -NoNewWindow
             Write-Output "Oh My Posh installed successfully."
         } catch {
             Write-Error "Failed to install Oh My Posh: $_"
@@ -43,7 +43,7 @@ function Install-OhMyPosh {
     }
 }
 
-Install-Fonts {
+function Install-Fonts {
     <#
     .SYNOPSIS
     Installs the required fonts for Oh My Posh.
